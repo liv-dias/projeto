@@ -6,7 +6,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-int modo_manual(){
+int codificar_imagem(int altura, int largura, int matriz[altura][largura]){//cat
+
+}
+
+void modo_manual(){//Livia
     int largura, altura;
     printf("Modo Manual Ativado;\n");
     printf("Informe a largura da imagem: ");
@@ -14,40 +18,40 @@ int modo_manual(){
     printf("Informe a altura da imagem: ");
     scanf("%d", &altura);
     if (largura <= 0 || largura > 1024 || altura <= 0 || altura > 768){
-        printf("Dimensões inválidas. A largura deve ser entre 1 e 1024, e a altura entre 1 e 768;\n");
-        return 1;
+        printf("Dimensões inválidas. A largura deve ser entre 1 e 1024, e a altura entre 1 e 768;\n->Tente novamente!\n");
+        modo_manual();
     }
     int matriz[altura][largura];
     printf("Informe os valores da matriz (0 para branco, 1 para preto):\n");
-    scanf("%d", matriz[0][0]);
+    //scanf("%d", matriz[0][0]);
     for(int i = 0; i < altura; i++){
         for(int j = 0; j < largura; j++){
             scanf("%d", &matriz[i][j]);
             if (matriz [i][j] != 0 && matriz[i][j] != 1){
-                printf("Valor invalido na posição (%d, %d). Use 0 para branco e 1 para preto.\n", i, j);
-                return 1;
+                printf("Valor invalido na posição (%d, %d). Use 0 para branco e 1 para preto.\nTente novamente!\n", i, j);
+                modo_manual();
             }
         }
     }
-    return matriz;
+    codificar_imagem(altura, largura, matriz);
+    return;
 }
 
-int codificar_imagem(int altura, int largura, int matriz[altura][largura]){
-    modo_manual();
-
+int modo_arquivo(char *nome_arquivo){//bea
+    int largura, altura;
+    int matriz[altura][largura];
+    codificar_imagem(altura, largura, matriz);
+    //
 }
 
-int modo_arquivo(char *nome_arquivo){
 
-}
-
-void exibir_ajuda(){
+int exibir_ajuda(){
     printf("Uso: ImageEncoder [-? | -m | -f ARQ]\n");
     printf("Codifica imagens binários dadas em arquivos PBM ou por dados informados pelo usuário.\n\n");
     printf("Argumentos:\n");
     printf(" -?, --help : apresenta essa orientação na tela;\n");
     printf("-m, --manual : ativa o modo de entrada manual, em que o usuário fornece todos os dados da imagem infomando-os através do teclado;\n");
-    printf("-f, --file : considera a imagem respresentado no arquivo PBM (Portable Bitmap)");
+    printf("-f, --file : considera a imagem respresentado no arquivo PBM (Portable Bitmap)\n");
 }
 
 int main(int argc, char *argv[]){
@@ -56,6 +60,7 @@ int main(int argc, char *argv[]){
         exibir_ajuda();
         return 0;
     }
+    
     if (strcmp(argv[1], "-m") == 0 || strcmp(argv[1], "--manual") == 0){
         //ativa o modo manual
         modo_manual();
