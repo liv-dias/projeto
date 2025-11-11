@@ -51,7 +51,9 @@ int modo_arquivo(char *file){//bea
     }
   
     fgets(tipo, sizeof(tipo), file);
-    fgets(coment, sizeof(coment), file);
+    while(fgets(coment, sizeof(coment), file)){
+      if(coment[0] == '#') continue;
+    }
     fscanf(file, "%d %d", &altura, &largura);
     int matriz[altura][largura];
 
