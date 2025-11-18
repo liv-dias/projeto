@@ -116,45 +116,53 @@ void modo_manual(char resultado[]){
 }
 
 int modo_arquivo(char *filename, char resultado[]){
+    //variáveis para armazenar altura e largura
     int largura = 0;
     int altura = 0;
-    char tipo[3];
-    char coment[1000];
+    char tipo[3];    //variável para armazenar a leitura do tipo do arquivo
+    char coment[1000];    //variável para armazenar a leitura de comentários
     FILE *file;     
 
-    file = fopen(filename, "r");
-    
+    file = fopen(filename, "r");    //abre o arquivo
+
+    //Se o arquivo estiver vazio, da erro e informa ao usuário
     if(file == NULL){
         printf("\nErro ao abrir o arquivo %s. Arquivo vazio.", filename);
         return 1;
     }
 
-    fgets(tipo, sizeof(tipo), file);
+    fgets(tipo, sizeof(tipo), file);    //le e armazena o tipo do arquivo (P1 ou P4)
 
+    //Le uma linha do arquivo
     while (fgets(coment, sizeof(coment), file)) {
+        //se o primeiro caractere for um #, pula para a próxima linha
         if (coment[0] == '#') {
             continue;
         } 
+        //se na linha tiver extamente dois interios, armazena-os nas variáveis altura e largura
         if (sscanf(coment, "%d %d", &altura, &largura) == 2) {
-            break; 
+            break;   //finaliza o laço
         }
     }
 
+    //se altura ou largura for igual a 0, informa o erro ao usuário
     if (largura == 0 || altura == 0) {
         printf("\nErro: Formato inválido ou dimensões não encontradas.\n");
-        fclose(file);
+        fclose(file); //fecha o arquivo
         return 1;
     }
 
+    //inicializa uma matriz com as dimensões lidas
     int matriz[altura][largura];
-
+    
+    //le e armazena cada dado em sua determinada posição dentro da matriz
     for(int i = 0; i < altura; i++){
         for(int j = 0; j < largura; j++){
             fscanf(file, "%d", &matriz[i][j]);
         }
     }
-    fclose(file);
-    codificar_imagem(altura, largura, matriz, resultado);
+    fclose(file); //fecha o arquivo
+    codificar_imagem(altura, largura, matriz, resultado); //codifica a imagem de acordo com os dados inseridos na matriz
 
     return 0;
 }
